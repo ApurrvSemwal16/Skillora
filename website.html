@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skillora: Course Comparison</title>
+    <link rel="stylesheet" href="website.css">
+</head>
+<body>
+
+<!-- Background Image -->
+<div class="bg-container"></div>
+
+<div class="main-container">
+
+    <!-- Header -->
+    <header>
+        <nav>
+          <a href="website.html" >  <div class="logo">Skillora</div></a>
+            <ul class="nav-links">
+                <li><a href="#courses">Courses</a></li>
+                <li><a href="#roadmap">Roadmaps</a></li>
+                <li><a href="contact.html">Contact</a></li> <!-- Link to Contact Page -->
+            </ul>
+            <button id="login-btn" class="btn">Login/Signup</button> <!-- Login/Signup Button -->
+        </nav>
+        <div class="hero">
+            <h1>Compare Courses, Find Your Path</h1>
+            <p>Skillora helps you compare platforms, courses, and discover career roadmaps.</p>
+            <a href="#courses" class="btn">Explore Courses</a>
+        </div>
+    </header>
+    <!-- Login/Signup Modal -->
+    <div id="auth-modal" class="auth-modal">
+        <div class="modal-content">
+            <span id="close-modal" class="close-btn">&times;</span>
+            <h2 id="modal-title">Login</h2>
+
+            <!-- Login/Signup Form -->
+            <form id="auth-form" onsubmit="event.preventDefault();">
+                <div>
+                    <label for="username">Username</label>
+                    <input type="text" id="username" required>
+                </div>
+                <div>
+                    <label for="password">Password</label>
+                    <input type="password" id="password" required>
+                </div>
+                <div>
+                    <button type="submit" id="submit-btn">Login</button>
+                    <button type="button" id="toggle-btn">Sign Up</button> <!-- Toggle to Sign Up -->
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Filter Section -->
+    <div class="filter-container">
+        <button onclick="toggleFilter()">🔍 Filter Courses</button>
+        <div id="filter-options" class="filter-options" style="display: none;">
+            <label>Field:</label>
+            <select id="field-filter">
+                <option value="all">All</option>
+                <option value="Engineering">Engineering</option>
+                <option value="Medical">Medical</option>
+                <option value="CS">Computer Science</option>
+                <option value="Business">Business</option>
+                <option value="Arts">Arts</option>
+            </select>
+
+            <label>Rating:</label>
+            <select id="rating-filter">
+                <option value="all">All</option>
+                <option value="5">★★★★★</option>
+                <option value="4">★★★★☆</option>
+                <option value="3">★★★☆☆</option>
+                <option value="2">★★☆☆☆</option>
+                <option value="1">★☆☆☆☆</option>
+            </select>
+
+            <label>Price Range:</label>
+            <select id="price-filter">
+                <option value="all">All</option>
+                <option value="free">Free</option>
+                <option value="low">&lt; $100</option>
+                <option value="medium">$100 - $300</option>
+                <option value="high">&gt; $300</option>
+            </select>
+
+            <button onclick="applyFilters()">Apply</button>
+        </div>
+    </div>
+
+    <!-- Course Selection Section -->
+    <section id="courses">
+        <h2>Available Courses</h2>
+        <div class="grid-container" id="course-list">
+            <!-- This will be populated by JavaScript -->
+        </div>
+        <button id="compare-btn" onclick="compareCourses()">Compare</button>
+    </section>
+    
+    <!-- Comparison Result Section -->
+    <section id="comparison-result" style="display: none;">
+        <button class="close-btn" onclick="closeComparison()">✖</button>
+        <h2>Comparison Result:</h2>
+        <div id="result-container"></div>
+    </section>
+
+    <!-- Roadmap Section -->
+    <section id="roadmap">
+        <h2>Explore Roadmaps</h2>
+        <p>Visit <strong>roadmap.sh</strong> to explore detailed career paths.</p>
+        <a href="https://roadmap.sh" target="_blank" class="btn">Visit Roadmap</a>
+    </section>
+    
+    <!-- Fields Section -->
+    <section id="fields">
+        <h2>Explore Fields</h2>
+        <div class="fields-container">
+            <div class="field-card" onclick="showFieldCourses('engineering')">
+                <h3>Engineering</h3>
+                <p>Explore courses and career paths in engineering.</p>
+            </div>
+            <div class="field-card" onclick="showFieldCourses('cs')">
+                <h3>Computer Science</h3>
+                <p>Discover CS courses and roadmaps.</p>
+            </div>
+            <div class="field-card" onclick="showFieldCourses('medical')">
+                <h3>Medical</h3>
+                <p>Find courses and career guidance in the medical field.</p>
+            </div>
+            <div class="field-card" onclick="showFieldCourses('business')">
+                <h3>Business</h3>
+                <p>Explore business courses and career paths.</p>
+            </div>
+            <div class="field-card" onclick="showFieldCourses('arts')">
+                <h3>Arts</h3>
+                <p>Check out courses and roadmaps in arts.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Courses Display Section -->
+    <section id="field-courses" style="display: none; padding: 60px 20px; background: #fff; color: #333;">
+        <h2 id="field-title"></h2>
+        <div id="course-container" class="grid-container"></div>
+        <button onclick="closeCourses()" class="btn" style="margin-top: 20px;">Close</button>
+    </section>
+
+<!-- Articles Section -->
+<section id="articles">
+    <h2>Articles Related to Tech</h2>
+    <!-- Category Filter -->
+    <label for="category-filter">Filter Articles by Category:</label>
+    <select id="category-filter" onchange="displayArticles()">
+        <option value="all">All</option>
+        <option value="tech">Tech</option>
+        <option value="cs">Computer Science</option>
+        <option value="business">Business</option>
+        <option value="arts">Arts</option>
+        <option value="medical">Medical</option>
+    </select>
+    <br>    
+
+    <!-- Articles Container -->
+    <div id="article-container">
+        <!-- Articles will be dynamically added here -->
+    </div>
+
+    <!-- Pagination Controls -->
+    <div id="pagination-controls">
+        <button id="prev-btn" onclick="changePage(-1)">Previous</button>
+        <button id="next-btn" onclick="changePage(1)">Next</button>
+    </div>
+</section>
+<br>
+
+<!-- User Forum Section -->
+<section id="user-forum">
+    <!-- <h2>User Forum <button id="toggle-forum" onclick="toggleForum()">&#x2193; Show Forum</button></h2> -->
+
+    <div id="forum-posts">
+        <!-- Forum posts will be displayed here -->
+    </div>
+
+    <div id="post-comment">
+        <h3>Leave a Comment</h3>
+        <textarea id="comment-text" placeholder="Write your comment here..."></textarea>
+        <button onclick="submitComment()">Post Comment</button>
+    </div>
+</section>
+<center><iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d3507.2375848680354!2d77.4808498!3d28.4723908!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390cea0f7b91511b%3A0x486f13bd49e5e7ae!2sSharda%20University!5e0!3m2!1sen!2sin!4v1743145819824!5m2!1sen!2sin" width="1100" height="500" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe></center>
+<br>
+    <footer>
+        <p>&copy; 2025 Skillora. All rights reserved.</p>
+    </footer>
+
+</div>
+
+<script src="website.js"></script>
+
+</body>
+</html>
